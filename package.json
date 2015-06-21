@@ -1,0 +1,21 @@
+{
+  "name": "overlode",
+  "version": "0.0.1",
+  "description": "Javascript function overloading utility.",
+  "main": "overlode.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jinger89/overlode.git"
+  },
+  "keywords": [
+    "javascript",
+    "function",
+    "overload"
+  ],
+  "author": "Jing Tao Liu",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/jinger89/overlode/issues"
+  },
+  "homepage": "https://github.com/jinger89/overlode#readme"
+}
