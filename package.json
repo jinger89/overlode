@@ -1,6 +1,6 @@
 {
   "name": "overlode",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Javascript function overloading utility.",
   "main": "overlode.js",
   "repository": {
@@ -13,7 +13,7 @@
     "overload"
   ],
   "author": "Jing Tao Liu",
-  "license": "BSD",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/jinger89/overlode/issues"
   },
