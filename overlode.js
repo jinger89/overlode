@@ -39,6 +39,10 @@
                 var action = lode.action;
                 var ok = true;
                 
+                // special case: if there are no tests (empty array)
+                if (tests.length == 0 && action.length == 0 && args.length == 0)
+                    return action.apply(inner, args);
+                
                 if (tests instanceof Array) {
                     for (var j = 0; j < tests.length; j++) {
                         var test = tests[j];
