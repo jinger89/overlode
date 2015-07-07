@@ -15,7 +15,7 @@
             var tests = args[i];
             var action = args[i + 1];
             
-            if (tests instanceof Array && typeof action == 'function') {
+            if ((tests instanceof Array || typeof tests == 'number') && typeof action == 'function') {
                 lodes.push({
                     tests: tests,
                     action: action
@@ -37,38 +37,52 @@
                 var lode = lodes[i];
                 var tests = lode.tests;
                 var action = lode.action;
-                var ok = true;
                 
-                // special case: if there are no tests (empty array)
-                if (tests.length == 0 && action.length == 0 && args.length == 0)
-                    return action.apply(inner, args);
-                
+                // overload tests is an array, each argument must pass its matching test
                 if (tests instanceof Array) {
+                    var ok = true;
+                    
+                    // keep going if number of tests does not match number of arguments used, does not match number of arguments given
+                    if (tests.length != args.length || action.length != args.length)
+                        continue;
+                    
+                    // special case: if there are no tests, action takes no arguments, and no arguments are given
+                    if (tests.length == 0 && action.length == 0 && args.length == 0)
+                        return action.apply(inner, args);
+                    
+                    // test each argument
                     for (var j = 0; j < tests.length; j++) {
                         var test = tests[j];
                         var value = args[j];
                         
-                        if (typeof test == 'function') {
-                            if (!test(value)) {
-                                ok = false;
-                            }
-                        } else if (test instanceof Array) {
-                            for (var k = 0; k < test.length; k++) {
-                                if (typeof test[k] != 'function' || (typeof test[k] == 'function' && !test[k](value))) {
-                                    ok = false;
-                                    break;
-                                }
-                            }
-                        } else {
-                            ok = false;
-                        }
+                        // test is string value '*', any value type can be used
+                        if (test == '*')
+                            continue;
                         
-                        if (!ok)
-                            break;
+                        // test is a function, function must return true
+                        else if (typeof test == 'function' && test(value) === true)
+                            continue;
+                        
+                        // test is an object, value must be same type of object
+                        else if (typeof test == 'object' && test.constructor == value.constructor)
+                            continue;
+                        
+                        // test failed on argument, move onto next overload
+                        ok = false;
+                        break;
                     }
+                    
+                    // if each argument passed test, trigger action
+                    if (ok)
+                        return action.apply(inner, args);
                 }
                 
-                if (ok)
+                // overload test is a number, number of arguments must match test number
+                if (typeof tests == 'number' && args.length == tests && action.length == tests)
+                    return action.apply(inner, args);
+                
+                // no overload test, trigger the action
+                if (typeof tests == 'undefined')
                     return action.apply(inner, args);
             }
         };
