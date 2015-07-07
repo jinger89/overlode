@@ -1,6 +1,6 @@
 {
   "name": "overlode",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Javascript function overloading utility.",
   "main": "overlode.js",
   "repository": {
